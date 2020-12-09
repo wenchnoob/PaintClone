@@ -17,6 +17,7 @@ public class MyCanvas extends Canvas {
     public MyCanvas(Window grandParent) {
         addMouseListener(new MYMouseAdapter());
         addMouseMotionListener(new MYMouseAdapter());
+        this.setBackground(Color.WHITE);
         this.setVisible(true);
         this.grandParent = grandParent;
         parent = grandParent.getPanel(Window.CENTER);
@@ -67,29 +68,73 @@ public class MyCanvas extends Canvas {
             if (state == MyCanvas.FREE) {
                 drawables.add(new Drawable(e.getX(), e.getY(), 1,1, true, true, color));
             } else if (state < 0) {
-                drawables.add(new Drawable(e.getX(), e.getY(), 10,10, true, true, color));
+                drawables.add(new Drawable(e.getX(), e.getY(), 10,10, true, true, Color.WHITE));
             }
-            MyCanvas.this.repaint();
+            MyCanvas.this.repaint(e.getX(), e.getY(), 11,11);
         }
 
         @Override
         public void mouseDragged(MouseEvent e) {
             if (state == MyCanvas.FREE) {
                 drawables.add(new Drawable(e.getX(), e.getY(), 1,1, true, true, color));
+            } else if (state < 0) {
+                drawables.add(new Drawable(e.getX(), e.getY(), 10,10, true, true, Color.white));
             }
-            MyCanvas.this.repaint();
+            MyCanvas.this.repaint(e.getX(), e.getY(), 11,11);
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
+            Drawable rect = null;
             if (getState() == MyCanvas.RECT) {
-                drawables.add(new Drawable(prevXClick, prevYClick, e.getX() - prevXClick, e.getY() - prevYClick, false, true, color));
+                if (prevXClick < e.getX()) {
+                    if (prevYClick < e.getY()) {
+                        rect = new Drawable(prevXClick, prevYClick, e.getX() - prevXClick + 1, e.getY() - prevYClick + 1, false, true, color);
+                    } else {
+                        rect = new Drawable(prevXClick, e.getY(), e.getX() - prevXClick + 1, prevYClick - e.getY() + 1, false, true, color);
+                    }
+                } else {
+                    if (prevYClick < e.getY()) {
+                        rect = new Drawable(e.getX(), prevYClick,  prevXClick - e.getX() + 1, e.getY() - prevYClick + 1, false, true, color);
+                    } else {
+                        rect = new Drawable(e.getX(),  e.getY(), prevXClick - e.getX() + 1, prevYClick - e.getY() + 1, false, true, color);
+                    }
+                }
+                drawables.add(rect);
             } else if(state == MyCanvas.FRECT) {
-                drawables.add(new Drawable(prevXClick, prevYClick, e.getX() - prevXClick, e.getY() - prevYClick, true, true, color));
+                if (prevXClick < e.getX()) {
+                    if (prevYClick < e.getY()) {
+                        rect = new Drawable(prevXClick, prevYClick, e.getX() - prevXClick + 1, e.getY() - prevYClick + 1, true, true, color);
+                    } else {
+                        rect = new Drawable(prevXClick, e.getY(), e.getX() - prevXClick + 1, prevYClick - e.getY() + 1, true, true, color);
+                    }
+                } else {
+                    if (prevYClick < e.getY()) {
+                        rect = new Drawable(e.getX(), prevYClick,  prevXClick - e.getX() + 1, e.getY() - prevYClick + 1, true, true, color);
+                    } else {
+                        rect = new Drawable(e.getX(),  e.getY(), prevXClick - e.getX() + 1, prevYClick - e.getY() + 1, true, true, color);
+                    }
+                }
+                drawables.add(rect);
             } else if (state == MyCanvas.LINE) {
                 drawables.add(new Drawable(prevXClick, prevYClick, e.getX(), e.getY(), false, false, color));
+            } else if (state < 0) {
+                drawables.add(new Drawable(prevXClick, prevYClick, e.getX() - prevXClick, e.getY() - prevYClick, true, true, Color.WHITE));
             }
-            MyCanvas.this.repaint();
+
+            if (prevXClick < e.getX()) {
+                if (prevYClick < e.getY()) {
+                    MyCanvas.this.repaint(prevXClick, prevYClick, (e.getX() - prevXClick) + 2, (e.getY() - prevYClick) + 2);
+                } else {
+                    MyCanvas.this.repaint(prevXClick, e.getY(), (e.getX() - prevXClick) + 2, (prevYClick - e.getY()) + 2);
+                }
+            } else {
+                if (prevYClick < e.getY()) {
+                    MyCanvas.this.repaint(e.getX(), prevYClick,  (prevXClick - e.getX()) + 2, (e.getY() - prevYClick) + 2);
+                } else {
+                    MyCanvas.this.repaint(e.getX(),  e.getY(), (prevXClick - e.getX()) + 2, (prevYClick - e.getY()) + 2);
+                }
+            }
         }
 
         @Override
