@@ -104,15 +104,15 @@ public class MyCanvas extends Canvas {
             } else if(state == MyCanvas.FRECT) {
                 if (prevXClick < e.getX()) {
                     if (prevYClick < e.getY()) {
-                        rect = new Drawable(prevXClick, prevYClick, e.getX() - prevXClick + 1, e.getY() - prevYClick + 1, true, true, color);
+                        rect = new Drawable(prevXClick, prevYClick, e.getX() - prevXClick, e.getY() - prevYClick, true, true, color);
                     } else {
-                        rect = new Drawable(prevXClick, e.getY(), e.getX() - prevXClick + 1, prevYClick - e.getY() + 1, true, true, color);
+                        rect = new Drawable(prevXClick, e.getY(), e.getX() - prevXClick, prevYClick - e.getY(), true, true, color);
                     }
                 } else {
                     if (prevYClick < e.getY()) {
-                        rect = new Drawable(e.getX(), prevYClick,  prevXClick - e.getX() + 1, e.getY() - prevYClick + 1, true, true, color);
+                        rect = new Drawable(e.getX(), prevYClick,  prevXClick - e.getX(), e.getY() - prevYClick, true, true, color);
                     } else {
-                        rect = new Drawable(e.getX(),  e.getY(), prevXClick - e.getX() + 1, prevYClick - e.getY() + 1, true, true, color);
+                        rect = new Drawable(e.getX(),  e.getY(), prevXClick - e.getX(), prevYClick - e.getY(), true, true, color);
                     }
                 }
                 drawables.add(rect);
