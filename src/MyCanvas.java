@@ -27,6 +27,14 @@ public class MyCanvas extends Canvas {
         drawables = new ArrayList<>();
     }
 
+    public String saveString() {
+        var sb = new StringBuilder(300);
+        drawables.forEach(drawable -> sb.append(drawable + "\n"));
+        return sb.toString();
+    }
+
+    public void accept(Drawable d) { drawables.add(d);}
+
     public void setState(int state) {
         this.state = state;
     }
@@ -144,7 +152,7 @@ public class MyCanvas extends Canvas {
         }
     }
 
-    private class Drawable {
+    public static class Drawable {
         private int x, y, x2, y2;
         private boolean fill, isRect;
         private Color color;
@@ -163,5 +171,9 @@ public class MyCanvas extends Canvas {
         public boolean isFilled() { return fill; }
         public int[] specs() { return new int[]{x, y, x2, y2}; }
         public Color color() { return color; }
+
+        public String toString() {
+            return x + " " + y + " " + x2 + " " + y2 + " " + fill + " " + isRect + " " + color.getRed() + " " + color.getBlue() + " " + color.getGreen();
+        }
     }
 }

@@ -3,12 +3,11 @@ import java.awt.*;
 
 public class Window extends JFrame {
     public static final int LEFT = 1, RIGHT = 2, TOP = 3, BOTTOM = 4, CENTER = 5;
-    private JPanel left, right, top, bottom, center;
-
-    private MyCanvas canvas;
-    private ColorPanel colors;
-    private ControlPanel controls;
-    private Tools tools;
+    private final JPanel left;
+    private final JPanel right;
+    private final JPanel top;
+    private final JPanel bottom;
+    private final JPanel center;
 
     public Window(int width, int height, String name) {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -39,13 +38,15 @@ public class Window extends JFrame {
         this.add(bottom, BorderLayout.SOUTH);
         this.add(center, BorderLayout.CENTER);
 
-        canvas = new MyCanvas(this);
+        MyCanvas canvas = new MyCanvas(this);
 
-        colors = new ColorPanel(this, canvas);
+        ColorPanel colors = new ColorPanel(this, canvas);
 
-        controls = new ControlPanel(this, canvas);
+        Saver saver = new Saver(this, canvas);
 
-        tools = new Tools(this, canvas);
+        ControlPanel controls = new ControlPanel(this, canvas, saver);
+
+        Tools tools = new Tools(this, canvas);
     }
 
     public Insets getInsets() {
@@ -53,19 +54,14 @@ public class Window extends JFrame {
     }
 
     public JPanel getPanel(int comp) {
-        switch(comp) {
-            case LEFT:
-                return left;
-            case RIGHT:
-                return right;
-            case TOP:
-                return top;
-            case BOTTOM:
-                return bottom;
-            case CENTER:
-                return center;
-        }
-        return null;
+        return switch (comp) {
+            case LEFT -> left;
+            case RIGHT -> right;
+            case TOP -> top;
+            case BOTTOM -> bottom;
+            case CENTER -> center;
+            default -> null;
+        };
     }
 
 }

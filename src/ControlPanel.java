@@ -7,16 +7,18 @@ import java.util.List;
 
 public class ControlPanel implements ActionListener {
     private List<JButton> buttons;
-    private JButton draw, erase, save;
+    private JButton draw, erase, save, open;
 
     private Window grandParent;
     private JPanel parent;
     private MyCanvas canvas;
+    private Saver saver;
 
-    public ControlPanel(Window grandParent, MyCanvas canvas) {
+    public ControlPanel(Window grandParent, MyCanvas canvas, Saver saver) {
         this.grandParent = grandParent;
         parent = this.grandParent.getPanel(Window.BOTTOM);
         this.canvas = canvas;
+        this.saver = saver;
 
 
         buttons = new ArrayList<>();
@@ -28,9 +30,14 @@ public class ControlPanel implements ActionListener {
 
         // To be actually implemented
         save = new JButton("Save");
+        save.addActionListener(e -> saver.save());
+
+        open = new JButton("Open");
+        open.addActionListener(e -> saver.open());
 
         buttons.add(draw);
         buttons.add(erase);
+        buttons.add(open);
         buttons.add(save);
 
         int cols = buttons.size();
